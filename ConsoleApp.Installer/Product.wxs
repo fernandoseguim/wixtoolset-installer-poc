@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?if $(var.Platform)=x64 ?>
+	<?define ProductCode = "{478E28CC-C1A1-4998-9FB3-7F3E672A78D3}" ?>
+	<?else?>
+	<?define ProductCode = "{A3C10EF3-E4E0-4AC3-80BF-A4D8BDA6BC36}" ?>
+	<?endif?>
+	
+	<?define UpgradeCode = "{A88A1423-FC2D-4207-8CCD-9CA564232044}" ?>
+	
+	<Product 
+		Id="$(var.ProductCode)" 
+		Name="!(loc.ProductName_$(var.Platform))" 
+		Language="!(loc.Language)" 
+		Version="$(var.BuildVersion)" 
+		Manufacturer="!(loc.Company)" 
+		UpgradeCode="$(var.UpgradeCode)">
+		
+		<Package 
+			InstallerVersion="200" 
+			Compressed="yes" 
+			InstallScope="perMachine" 
+			Platform="$(var.Platform)" 
+			Manufacturer="!(loc.Company)" 
+			Description="!(loc.Description)"
+			Keywords="!(loc.Keywords)"
+			Comments="!(loc.Comments)"
+			Languages="!(loc.Language)"
+			/>
+
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeErrorMessage)" />
+
+		<MediaTemplate
+			EmbedCab="yes"
+		/>
+
+		<Icon Id="icon.ico" SourceFile="$(var.ConsoleApp.ProjectDir)\cappta.ico"/>
+		
+		<Property Id="ARPPRODUCTICON">icon.ico</Property>
+		<Property Id="ARPURLINFOABOUT">http://www.cappta.com.br</Property>
+
+		<UIRef Id="WixUI_Minimal"/>
+		<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\Assets\License.rtf" />
+		<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\Assets\Background.bmp" />
+		<WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\Assets\Banner.bmp"/>
+
+		<Feature Id="ProductFeature" Title="ConsoleApp" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+			<ComponentGroupRef Id="PublishedComponents" />
+		</Feature>
+	</Product>
+
+</Wix>

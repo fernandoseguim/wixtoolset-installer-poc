@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<ComponentGroup Id="ProductComponents">
+			<ComponentRef Id="MainAppShortcut" />
+			<ComponentRef Id="DesktopAppShortcut" />
+		</ComponentGroup>
+
+		<DirectoryRef Id="INSTALLFOLDER" FileSource="..\ConsoleApp\bin\Debug\netcoreapp2.0\win-$(var.Platform)\publish\">
+			
+			<Component Id="MainAppShortcut" Guid="{3F245EC2-800E-4E0C-A03E-458D5EFCBDB1}">
+
+				<Shortcut Id="MainAppShortcut" 
+				          Name="!(loc.ProductName_$(var.Platform))" 
+				          Target="[INSTALLFOLDER]ConsoleApp.exe"
+						  Directory="InstallProgramMenuFolder"
+				          WorkingDirectory="INSTALLFOLDER"
+				          Icon="icon.ico"
+				          />
+
+				<RegistryValue Id="RegShortcutKey" Root="HKCU" Key="SOFTWARE\!(loc.ProductNameFolder)" Name="Shortcut" Value="1" Type="integer" KeyPath="yes" />
+
+				<RemoveFolder Id="RemoveStartMenu" Directory="InstallProgramMenuFolder" On="uninstall" />
+			</Component>
+		</DirectoryRef>
+
+		<DirectoryRef Id="DesktopFolder">
+
+			<!--Atalho area de trabalho -->
+			<Component Id="DesktopAppShortcut" Guid="{80E86729-647D-4927-BD34-D02647E84C30}">
+
+				<Shortcut Id="DesktopAppShortcut"
+				          Name="!(loc.ProductName_$(var.Platform))"
+				          Target="[INSTALLFOLDER]ConsoleApp.exe"
+				          WorkingDirectory="INSTALLFOLDER"
+				          Icon="icon.ico"
+				/>
+
+				<RegistryValue Id="RegDesktopShortcutKey" Root="HKCU" Key="SOFTWARE\!(loc.ProductNameFolder)" Name="installed" Value="1" Type="integer" KeyPath="yes" />
+
+				<RemoveFolder Id="DesktopFolder" On="uninstall" />
+			</Component>
+
+		</DirectoryRef>
+	</Fragment>
+</Wix>
